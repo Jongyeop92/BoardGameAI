@@ -50,6 +50,7 @@ def minimax(state, depth, maxPlayer, firstCall=False):
         return 0
 
     if firstCall:
+        print "bestInfoList:", bestInfoList
         return random.choice(bestInfoList)
     else:
         return bestInfoList[0][0]

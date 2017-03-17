@@ -51,8 +51,8 @@ def main():
                 info = monteCarlo.get_play(state, marker)
                 pass
             else:
-                #info = minimax(state, 10, maxPlayer, True)
-                info = alphabeta(state, 9, -INFINITE, INFINITE, maxPlayer, True)
+                info = minimax(state, 10, maxPlayer, True)
+                #info = alphabeta(state, 9, -INFINITE, INFINITE, maxPlayer, True)
                 pass
 
             #info = minimax(state, 9, maxPlayer, True)
