@@ -11,10 +11,10 @@ import time
 
 def main():
     
-    state = OtheloBoard(8, 8)
+    state = OtheloBoard(8, 8, BLACK, WHITE)
     maxPlayer = False
 
-    monteCarlo = MonteCarlo(time=10, max_moves=100)
+    monteCarlo = MonteCarlo(time=5, max_moves=100)
 
     minTime = None
     maxTime = None
@@ -63,7 +63,8 @@ def main():
                     pass
                 else:
                     #info = monteCarlo.get_play(state, marker)
-                    info = minimax(state, 3, maxPlayer, True)
+                    #info = minimax(state, 3, maxPlayer, True)
+                    info = alphabeta(state, 4, -INFINITE, INFINITE, maxPlayer, True)
                     pass
                 
                 #info = minimax(state, 3, maxPlayer, True)

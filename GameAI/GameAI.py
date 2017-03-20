@@ -82,16 +82,19 @@ def alphabeta(state, depth, alpha, beta, maxPlayer, firstCall=False):
 
         if maxPlayer and alpha < value:
             alpha = value
-            bestInfo = (alpha, position)
-
+            
             if beta <= alpha:
                 break
+
+            bestInfo = (alpha, position)
+            
         elif not maxPlayer and beta > value:
             beta = value
-            bestInfo = (beta, position)
-
+            
             if beta <= alpha:
                 break
+
+            bestInfo = (beta, position)
 
     if bestInfo == None:
         if maxPlayer:
