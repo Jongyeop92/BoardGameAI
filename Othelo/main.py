@@ -81,7 +81,7 @@ def main():
                 totalTime += gap
                 count += 1
 
-                state.setMarker(marker, info[1])
+                state.setMarker(marker, info[-1])
 
                 print marker
                 print "Info:", info

@@ -149,9 +149,10 @@ class MonteCarlo(object):
 
         #print games, datetime.datetime.utcnow() - begin
 
-        percent_wins, move = max(
+        percent_wins, play_count, move = max(
             (self.wins.get((player, S.getBoardStr()), 0) /
              self.plays.get((player, S.getBoardStr()), 1),
+             self.plays.get((player, S.getBoardStr()), 0),
              p)
             for p, S in moves_states
         )
@@ -168,7 +169,7 @@ class MonteCarlo(object):
 ##
 ##        print "Maximum depth searched:", self.max_depth
 
-        return (percent_wins, move)
+        return (percent_wins, play_count, move)
 
     def run_simulation(self, state, player):
         visited_states = set()
