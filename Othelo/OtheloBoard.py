@@ -141,9 +141,3 @@ class OtheloBoard(Board):
                 return DRAW
         else:
             return None
-
-    def getMaxPlayer(self, maxPlayer):
-        if maxPlayer:
-            return self.FIRST
-        else:
-            return self.SECOND

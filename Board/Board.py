@@ -62,4 +62,7 @@ class Board:
         return 0 <= y and y < self.height and 0 <= x and x < self.width
 
     def getMaxPlayer(self, maxPlayer):
-        return None
+        if maxPlayer:
+            return self.FIRST
+        else:
+            return self.SECOND
