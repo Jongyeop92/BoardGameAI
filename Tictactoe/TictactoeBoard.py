@@ -12,7 +12,7 @@ O_MARK = 'O'
 
 class TictactoeBoard(Board):
 
-    def __init__(self, width, height, FIRST='F', SECOND='S'):
+    def __init__(self, width, height, FIRST=X_MARK, SECOND=O_MARK):
         Board.__init__(self, width, height, FIRST, SECOND)
 
         self.WIN_COUNT = 3

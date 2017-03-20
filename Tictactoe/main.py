@@ -10,7 +10,7 @@ import time
 
 
 def main():
-    state = TictactoeBoard(3, 3, X_MARK, O_MARK)
+    state = TictactoeBoard(3, 3)
     maxPlayer = False
 
     monteCarlo = MonteCarlo(time=5, max_moves=10)

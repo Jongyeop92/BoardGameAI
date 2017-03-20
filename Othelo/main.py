@@ -11,10 +11,10 @@ import time
 
 def main():
     
-    state = OtheloBoard(8, 8, BLACK, WHITE)
+    state = OtheloBoard(8, 8)
     maxPlayer = False
 
-    monteCarlo = MonteCarlo(time=3, max_moves=100)
+    monteCarlo = MonteCarlo(time=10, max_moves=100)
 
     minTime = None
     maxTime = None

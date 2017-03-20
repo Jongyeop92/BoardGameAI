@@ -17,8 +17,8 @@ def test():
                                 [EMPTY, EMPTY, EMPTY]]
     
     assert state.getPossiblePositionList(None) == [(0, 0), (0, 1), (0, 2),
-                                                  (1, 0), (1, 1), (1, 2),
-                                                  (2, 0), (2, 1), (2, 2)]
+                                                   (1, 0), (1, 1), (1, 2),
+                                                   (2, 0), (2, 1), (2, 2)]
 
     assert state.isWin() == None
 
@@ -67,15 +67,15 @@ def test():
     assert id(state.getBoard()) != id(newState.getBoard())
 
 
-    monteCarlo = MonteCarlo(time=5)
-    state = TictactoeBoard(3, 3)
-
-    print "moteCarlo"
-    print monteCarlo.get_play(state, X_MARK)
-    print
-    print "minimax"
-    print minimax(state, 9, True, True)
-    print
+##    monteCarlo = MonteCarlo(time=5)
+##    state = TictactoeBoard(3, 3)
+##
+##    print "moteCarlo"
+##    print monteCarlo.get_play(state, X_MARK)
+##    print
+##    print "minimax"
+##    print minimax(state, 9, True, True)
+##    print
     
 
     print "Success"

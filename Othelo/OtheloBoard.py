@@ -12,7 +12,7 @@ WHITE = 'W'
 
 class OtheloBoard(Board):
 
-    def __init__(self, width, height, FIRST='F', SECOND='S'):
+    def __init__(self, width, height, FIRST=BLACK, SECOND=WHITE):
         Board.__init__(self, width, height, FIRST, SECOND)
 
         self.blackCount = 2
