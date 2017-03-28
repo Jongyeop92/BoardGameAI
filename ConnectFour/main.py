@@ -1,5 +1,18 @@
 # -*- coding: utf8 -*-
 
+# 월드 4목과의 대전결과
+#
+# 선공
+#
+#  5초 vs 1단계 - 1 : 0
+#  5초 vs 2단계 - 0 : 3 (승리 조건 설정 실수로 2패)
+# 10초 vs 2단계 - 1 : 0
+# 10초 vs 3단계 - 1 : 0
+# 10초 vs 4단계 - 1 : 0 / 1 draw
+# 10초 vs 5단계 - 1 : 0
+# 10초 vs 6단계 - 0 : 1
+# 15초 vs 6단계 - 1 : 0
+
 import sys
 sys.path.append("../GameAI")
 
@@ -14,7 +27,7 @@ def main():
     state = ConnectFourBoard(7, 6)
     maxPlayer = False
 
-    monteCarlo = MonteCarlo(time=5, max_moves=100)
+    monteCarlo = MonteCarlo(time=15, max_moves=100)
 
     minTime = None
     maxTime = None

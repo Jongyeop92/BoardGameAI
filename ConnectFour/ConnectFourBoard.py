@@ -6,8 +6,8 @@ sys.path.append("../Board")
 from Board import *
 
 
-RED  = 'R'
-BLUE = 'B'
+RED  = 'O'
+BLUE = 'X'
 
 
 class ConnectFourBoard(Board):
@@ -75,7 +75,7 @@ class ConnectFourBoard(Board):
                     else:
                         break
 
-            if sameMarkCount == self.WIN_COUNT:
+            if sameMarkCount >= self.WIN_COUNT:
                 return marker
 
         if self.isFull():
