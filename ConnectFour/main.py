@@ -12,7 +12,8 @@
 # 10초 vs 4단계 - 1 : 0 / 1 draw
 # 10초 vs 5단계 - 1 : 0
 # 10초 vs 6단계 - 0 : 1
-# 15초 vs 6단계 - 1 : 0
+# 15초 vs 6단계 - 1 : 2
+# 20초 vs 6단계 - 1 : 1
 
 import sys
 sys.path.append("../GameAI")
@@ -25,82 +26,92 @@ import time
 
 def main():
 
-    state = ConnectFourBoard(7, 6)
-    maxPlayer = False
+    try:
+        state = ConnectFourBoard(7, 6)
+        maxPlayer = False
 
-    monteCarlo = MonteCarlo(time=5, max_moves=100, use_point=False)
+        #monteCarlo = MonteCarlo(time=5, max_moves=100, use_point=False)
+        monteCarlo = loadObject("MonteCarlo_ConnectFour_5")
 
-    minTime = None
-    maxTime = None
-    totalTime = 0
-    count = 0
+        print "plays:", len(monteCarlo.plays)
 
-    human = input()
+        minTime = None
+        maxTime = None
+        totalTime = 0
+        count = 0
 
-    if human in [0, 1]:
-        human = human == 0
+        human = input()
 
-    while True:
+        if human in [0, 1]:
+            human = human == 0
 
-        marker = state.getNextPlayer()
-        maxPlayer = not maxPlayer
+        while True:
 
-        state.showBoard()
+            marker = state.getNextPlayer()
+            maxPlayer = not maxPlayer
 
-        if state.isWin():
-            break
+            state.showBoard()
 
-        if human == maxPlayer:
-            while True:
-                x = input()
+            if state.isWin():
+                break
 
-                if state.setMarker(marker, x):
-                    break
+            if human == maxPlayer:
+                while True:
+                    x = input()
+
+                    if state.setMarker(marker, x):
+                        break
+
+                    print marker
+                    print "Wrong position"
+            else:
+                start = time.time()
+
+                if marker == RED:
+                    info = monteCarlo.get_play(state, marker)
+                    #info = minimax(state, 5, maxPlayer, True)
+                    #info = alphabeta(state, 6, -INFINITE, INFINITE, maxPlayer, True)
+                    pass
+                else:
+                    info = monteCarlo.get_play(state, marker)
+                    #info = minimax(state, 5, maxPlayer, True)
+                    #info = alphabeta(state, 5, -INFINITE, INFINITE, maxPlayer, True)
+                    pass
+
+                gap = time.time() - start
+
+                if minTime == None or gap < minTime:
+                    minTime = gap
+
+                if maxTime == None or gap > maxTime:
+                    maxTime = gap
+
+                totalTime += gap
+                count += 1
+
+                state.setMarker(marker, info[-1])
 
                 print marker
-                print "Wrong position"
-        else:
-            start = time.time()
+                print "Info:", info
+                print "Gap :", gap
 
-            if marker == RED:
-                info = monteCarlo.get_play(state, marker)
-                #info = minimax(state, 5, maxPlayer, True)
-                #info = alphabeta(state, 6, -INFINITE, INFINITE, maxPlayer, True)
-                pass
-            else:
-                info = monteCarlo.get_play(state, marker)
-                #info = minimax(state, 5, maxPlayer, True)
-                #info = alphabeta(state, 5, -INFINITE, INFINITE, maxPlayer, True)
-                pass
+            print
 
-            gap = time.time() - start
 
-            if minTime == None or gap < minTime:
-                minTime = gap
-
-            if maxTime == None or gap > maxTime:
-                maxTime = gap
-
-            totalTime += gap
-            count += 1
-
-            state.setMarker(marker, info[-1])
-
-            print marker
-            print "Info:", info
-            print "Gap :", gap
-
+        print "Win:", state.isWin()
         print
+        print "MinTime  :", minTime
+        print "MaxTime  :", maxTime
+        print "MeanTime :", (totalTime / count)
+        print "TotalTime:", totalTime
+        print
+        print "Count:", count
 
+    except:
+        print "except"
 
-    print "Win:", state.isWin()
-    print
-    print "MinTime  :", minTime
-    print "MaxTime  :", maxTime
-    print "MeanTime :", (totalTime / count)
-    print "TotalTime:", totalTime
-    print
-    print "Count:", count
+    finally:
+        saveObject(monteCarlo, "MonteCarlo_ConnectFour_5")
 
 
 if __name__ == "__main__":

@@ -11,6 +11,7 @@ import copy
 import random
 import math
 import datetime
+import pickle
 
 
 def minimax(state, depth, maxPlayer, firstCall=False):
@@ -225,3 +226,13 @@ class MonteCarlo(object):
             or (self.use_point and (state.getPoint(state.FIRST) > state.getPoint(state.SECOND)) and player == state.FIRST) \
             or (self.use_point and (state.getPoint(state.FIRST) < state.getPoint(state.SECOND)) and player == state.SECOND):
                 self.wins[(player, state.getBoardStr())] += 1
+
+
+def saveObject(obj, fileName):
+    with open(fileName, "wb") as f:
+        pickle.dump(obj, f)
+
+
+def loadObject(fileName):
+    with open(fileName, "rb") as f:
+        return pickle.load(f)
