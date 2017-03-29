@@ -126,6 +126,8 @@ class MonteCarlo(object):
 
         self.C = kwargs.get('C', 1.4)
 
+        self.use_point = kwargs.get('use_point', True)
+
     def update(self, state):
         pass
 
@@ -220,6 +222,6 @@ class MonteCarlo(object):
                 continue
             self.plays[(player, state.getBoardStr())] += 1
             if player == winner or winner == DRAW \
-            or ((state.getPoint(state.FIRST) > state.getPoint(state.SECOND)) and player == state.FIRST) \
-            or ((state.getPoint(state.FIRST) < state.getPoint(state.SECOND)) and player == state.SECOND):
+            or (self.use_point and (state.getPoint(state.FIRST) > state.getPoint(state.SECOND)) and player == state.FIRST) \
+            or (self.use_point and (state.getPoint(state.FIRST) < state.getPoint(state.SECOND)) and player == state.SECOND):
                 self.wins[(player, state.getBoardStr())] += 1
