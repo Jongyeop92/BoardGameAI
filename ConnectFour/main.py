@@ -28,7 +28,7 @@ def main():
     state = ConnectFourBoard(7, 6)
     maxPlayer = False
 
-    monteCarlo = MonteCarlo(time=5, max_moves=100)
+    monteCarlo = MonteCarlo(time=5, max_moves=100, use_point=False)
 
     minTime = None
     maxTime = None
@@ -64,9 +64,13 @@ def main():
 
             if marker == RED:
                 info = monteCarlo.get_play(state, marker)
+                #info = minimax(state, 5, maxPlayer, True)
+                #info = alphabeta(state, 6, -INFINITE, INFINITE, maxPlayer, True)
                 pass
             else:
                 info = monteCarlo.get_play(state, marker)
+                #info = minimax(state, 5, maxPlayer, True)
+                #info = alphabeta(state, 5, -INFINITE, INFINITE, maxPlayer, True)
                 pass
 
             gap = time.time() - start

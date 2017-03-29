@@ -17,6 +17,44 @@ class ConnectFourBoard(Board):
 
         self.WIN_COUNT = 4
 
+    def getPoint(self, marker):
+        point = 0
+
+        for y in range(self.height):
+            for x in range(self.width):
+
+                if self.board[y][x] != marker: continue
+
+                maxSameMarkCount = 0
+                for directionPair in self.directionPairList:
+                    sameMarkCount = 1
+                    for direction in directionPair:
+                        dy, dx = direction
+                        nowY, nowX = y, x
+
+                        while self.isInBoard(nowY + dy, nowX + dx):
+                            nowY += dy
+                            nowX += dx
+
+                            if self.board[nowY][nowX] == marker:
+                                sameMarkCount += 1
+                            else:
+                                break
+
+                    if sameMarkCount > maxSameMarkCount:
+                        maxSameMarkCount = sameMarkCount
+
+                if maxSameMarkCount >= self.WIN_COUNT:
+                    point = INFINITE
+                    break
+                else:
+                    point += maxSameMarkCount
+
+            if point == INFINITE:
+                break
+
+        return point
+
     def getPossiblePositionList(self, marker):
         possiblePositionList = []
 

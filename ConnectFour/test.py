@@ -38,7 +38,7 @@ def test():
 
     assert state.isFull() == True
     assert state.getPossiblePositionList(RED) == []
-    assert state.isWin() == DRAW
+    assert state.isWin() == BLUE
 
 
     print "Success"
