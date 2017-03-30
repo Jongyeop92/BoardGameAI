@@ -14,7 +14,7 @@ import datetime
 import pickle
 
 
-def minimax(state, depth, maxPlayer, firstCall=False):
+def minimax(state, depth, maxPlayer, firstCall=True):
     result = state.isWin()
 
     if result != None:
@@ -35,7 +35,7 @@ def minimax(state, depth, maxPlayer, firstCall=False):
     for position in possiblePositionList:
         copyState = copy.deepcopy(state)
         copyState.setMarker(marker, position)
-        value = minimax(copyState, depth - 1, not maxPlayer)
+        value = minimax(copyState, depth - 1, not maxPlayer, False)
 
         if bestInfoList == []:
             bestInfoList = [(value, position)]
@@ -57,7 +57,7 @@ def minimax(state, depth, maxPlayer, firstCall=False):
         return bestInfoList[0][0]
 
 
-def alphabeta(state, depth, alpha, beta, maxPlayer, firstCall=False):
+def alphabeta(state, depth, alpha, beta, maxPlayer, firstCall=True):
     result = state.isWin()
 
     if result != None:
@@ -79,7 +79,7 @@ def alphabeta(state, depth, alpha, beta, maxPlayer, firstCall=False):
     for position in possiblePositionList:
         copyState = copy.deepcopy(state)
         copyState.setMarker(marker, position)
-        value = alphabeta(copyState, depth - 1, alpha, beta, not maxPlayer)
+        value = alphabeta(copyState, depth - 1, alpha, beta, not maxPlayer, False)
 
         if maxPlayer and alpha < value:
             alpha = value
