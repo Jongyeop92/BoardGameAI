@@ -24,8 +24,8 @@ from ConnectFourBoard import *
 import time
 
 
-objectFileName = "MonteCarlo_ConnectFour_5"
-#monteCarlo = MonteCarlo(time=5, max_moves=100, use_point=False)
+objectFileName = "MonteCarlo_ConnectFour_10"
+#monteCarlo = MonteCarlo(time=10, max_moves=100, use_point=False)
 monteCarlo = loadObject(objectFileName)
 print "plays:", len(monteCarlo.plays)
 
@@ -33,7 +33,7 @@ print "plays:", len(monteCarlo.plays)
 def main():
 
     while True:
-        runGame()
+        runGame(False)
 
 
 def runGame(autoPlay=True):
