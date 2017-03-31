@@ -156,18 +156,18 @@ class MonteCarlo(object):
         #print games, datetime.datetime.utcnow() - begin
 
         percent_wins, play_count, move = max(
-            (self.wins.get((player, S.getBoardStr()), 0) /
-             self.plays.get((player, S.getBoardStr()), 1),
-             self.plays.get((player, S.getBoardStr()), 0),
+            (self.wins.get((player, S.getCompressedBoardStr()), 0) /
+             self.plays.get((player, S.getCompressedBoardStr()), 1),
+             self.plays.get((player, S.getCompressedBoardStr()), 0),
              p)
             for p, S in moves_states
         )
 
 ##        for x in sorted(
-##            ((100 * self.wins.get((player, S.getBoardStr()), 0) /
-##              self.plays.get((player, S.getBoardStr()), 1),
-##              self.wins.get((player, S.getBoardStr()), 0),
-##              self.plays.get((player, S.getBoardStr()), 0), p)
+##            ((100 * self.wins.get((player, S.getCompressedBoardStr()), 0) /
+##              self.plays.get((player, S.getCompressedBoardStr()), 1),
+##              self.wins.get((player, S.getCompressedBoardStr()), 0),
+##              self.plays.get((player, S.getCompressedBoardStr()), 0), p)
 ##             for p, S in moves_states),
 ##            reverse=True
 ##        ):
@@ -193,21 +193,21 @@ class MonteCarlo(object):
                 copy_state.setMarker(player, p)
                 moves_states.append((p, copy_state))
 
-            if all(self.plays.get((player, S.getBoardStr())) for p, S in moves_states):
+            if all(self.plays.get((player, S.getCompressedBoardStr())) for p, S in moves_states):
                 log_total = math.log(
-                    sum(self.plays[(player, S.getBoardStr())] for p, S in moves_states))
+                    sum(self.plays[(player, S.getCompressedBoardStr())] for p, S in moves_states))
                 value, move, state = max(
-                    ((self.wins[(player, S.getBoardStr())] / self.plays[(player, S.getBoardStr())]) +
-                     self.C * math.sqrt(log_total / self.plays[(player, S.getBoardStr())]), p, S)
+                    ((self.wins[(player, S.getCompressedBoardStr())] / self.plays[(player, S.getCompressedBoardStr())]) +
+                     self.C * math.sqrt(log_total / self.plays[(player, S.getCompressedBoardStr())]), p, S)
                     for p, S in moves_states
                 )
             else:
                 move, state = random.choice(moves_states)
 
-            if expand and (player, state.getBoardStr()) not in self.plays:
+            if expand and (player, state.getCompressedBoardStr()) not in self.plays:
                 expand = False
-                self.plays[(player, state.getBoardStr())] = 0
-                self.wins[(player, state.getBoardStr())] = 0
+                self.plays[(player, state.getCompressedBoardStr())] = 0
+                self.wins[(player, state.getCompressedBoardStr())] = 0
                 if t > self.max_depth:
                     self.max_depth = t
 
@@ -219,13 +219,13 @@ class MonteCarlo(object):
                 break
         
         for player, state in visited_states:
-            if (player, state.getBoardStr()) not in self.plays:
+            if (player, state.getCompressedBoardStr()) not in self.plays:
                 continue
-            self.plays[(player, state.getBoardStr())] += 1
+            self.plays[(player, state.getCompressedBoardStr())] += 1
             if player == winner or winner == DRAW \
             or (self.use_point and (state.getPoint(state.FIRST) > state.getPoint(state.SECOND)) and player == state.FIRST) \
             or (self.use_point and (state.getPoint(state.FIRST) < state.getPoint(state.SECOND)) and player == state.SECOND):
-                self.wins[(player, state.getBoardStr())] += 1
+                self.wins[(player, state.getCompressedBoardStr())] += 1
 
 
 def saveObject(obj, fileName):

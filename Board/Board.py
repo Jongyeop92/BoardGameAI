@@ -35,6 +35,29 @@ class Board:
     def getBoardStr(self):
         return '\n'.join(''.join(row) for row in self.board)
 
+    def getCompressedBoardStr(self):
+        boardStr = self.getBoardStr().replace('\n', '')
+
+        compressedBoardStr = ''
+
+        ch = boardStr[0]
+        count = 1
+        for i in range(1, len(boardStr)):
+            if ch == boardStr[i]:
+                count += 1
+            else:
+                if count > 1 or ch == EMPTY:
+                    compressedBoardStr += str(count) + ch
+                else:
+                    compressedBoardStr += ch
+
+                ch = boardStr[i]
+                count = 1
+
+        compressedBoardStr += str(count) + ch
+
+        return compressedBoardStr.replace(EMPTY, '')
+
     def showBoard(self):
         for row in self.board:
             print '+'.join(row)
