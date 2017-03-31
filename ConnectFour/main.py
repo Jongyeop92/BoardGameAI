@@ -24,16 +24,23 @@ from ConnectFourBoard import *
 import time
 
 
-objectFileName = "MonteCarlo_ConnectFour_10"
-#monteCarlo = MonteCarlo(time=10, max_moves=100, use_point=False)
-monteCarlo = loadObject(objectFileName)
-print "plays:", len(monteCarlo.plays)
+objectFileName = "MonteCarlo_ConnectFour_5_compressed_add_draws"
 
+try:
+    monteCarlo = loadObject(objectFileName)
+except:
+    monteCarlo = MonteCarlo(time=10, max_moves=100, use_point=False)
+
+print "results:", len(monteCarlo.results)
+
+sys.exit(0)
 
 def main():
 
+    autoplay = input("autoplay is 0: ") == 0
+
     while True:
-        runGame(False)
+        runGame(autoplay)
 
 
 def runGame(autoPlay=True):
@@ -76,13 +83,13 @@ def runGame(autoPlay=True):
 
             if marker == RED:
                 info = monteCarlo.get_play(state, marker)
-                #info = minimax(state, 5, maxPlayer, True)
-                #info = alphabeta(state, 6, -INFINITE, INFINITE, maxPlayer, True)
+                #info = minimax(state, 5, maxPlayer)
+                #info = alphabeta(state, 6, -INFINITE, INFINITE, maxPlayer)
                 pass
             else:
                 info = monteCarlo.get_play(state, marker)
-                #info = minimax(state, 5, maxPlayer, True)
-                #info = alphabeta(state, 5, -INFINITE, INFINITE, maxPlayer, True)
+                #info = minimax(state, 5, maxPlayer)
+                #info = alphabeta(state, 5, -INFINITE, INFINITE, maxPlayer)
                 pass
 
             gap = time.time() - start
