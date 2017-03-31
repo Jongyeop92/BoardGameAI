@@ -122,8 +122,7 @@ class MonteCarlo(object):
 
         self.max_moves = kwargs.get('max_moves', 10)
 
-        self.wins = {}
-        self.plays = {}
+        self.results = {}
 
         self.C = kwargs.get('C', 1.4)
 
@@ -155,11 +154,16 @@ class MonteCarlo(object):
 
         #print games, datetime.datetime.utcnow() - begin
 
-        percent_wins, play_count, move = max(
-            (self.wins.get((player, S.getCompressedBoardStr()), 0) /
-             self.plays.get((player, S.getCompressedBoardStr()), 1),
-             self.plays.get((player, S.getCompressedBoardStr()), 0),
-             p)
+        percent_no_loses, percent_wins, play_count, move = max(
+            ((self.results.get((player, S.getCompressedBoardStr()), {}).get('wins',  0) + self.results.get((player, S.getCompressedBoardStr()), {}).get('draws', 0)) /
+              self.results.get((player, S.getCompressedBoardStr()), {}).get('plays', 1),
+             
+              self.results.get((player, S.getCompressedBoardStr()), {}).get('wins', 0) /
+              self.results.get((player, S.getCompressedBoardStr()), {}).get('plays', 1),
+            
+              self.results.get((player, S.getCompressedBoardStr()), {}).get('plays', 0),
+             
+              p)
             for p, S in moves_states
         )
 
@@ -175,7 +179,7 @@ class MonteCarlo(object):
 ##
 ##        print "Maximum depth searched:", self.max_depth
 
-        return (percent_wins, play_count, move)
+        return (percent_no_loses, percent_wins, play_count, move)
 
     def run_simulation(self, state, player):
         visited_states = set()
@@ -193,21 +197,22 @@ class MonteCarlo(object):
                 copy_state.setMarker(player, p)
                 moves_states.append((p, copy_state))
 
-            if all(self.plays.get((player, S.getCompressedBoardStr())) for p, S in moves_states):
+            if all(self.results.get((player, S.getCompressedBoardStr()), {}).get('plays') for p, S in moves_states):
                 log_total = math.log(
-                    sum(self.plays[(player, S.getCompressedBoardStr())] for p, S in moves_states))
+                    sum(self.results[(player, S.getCompressedBoardStr())]['plays'] for p, S in moves_states))
                 value, move, state = max(
-                    ((self.wins[(player, S.getCompressedBoardStr())] / self.plays[(player, S.getCompressedBoardStr())]) +
-                     self.C * math.sqrt(log_total / self.plays[(player, S.getCompressedBoardStr())]), p, S)
+                    ((self.results[(player, S.getCompressedBoardStr())]['wins'] / self.results[(player, S.getCompressedBoardStr())]['plays']) +
+                     self.C * math.sqrt(log_total / self.results[(player, S.getCompressedBoardStr())]['plays']), p, S)
                     for p, S in moves_states
                 )
             else:
                 move, state = random.choice(moves_states)
 
-            if expand and (player, state.getCompressedBoardStr()) not in self.plays:
+            if expand and (player, state.getCompressedBoardStr()) not in self.results:
                 expand = False
-                self.plays[(player, state.getCompressedBoardStr())] = 0
-                self.wins[(player, state.getCompressedBoardStr())] = 0
+                self.results[(player, state.getCompressedBoardStr())] = {'plays' : 0,
+                                                                         'wins'  : 0,
+                                                                         'draws' : 0}
                 if t > self.max_depth:
                     self.max_depth = t
 
@@ -219,13 +224,16 @@ class MonteCarlo(object):
                 break
         
         for player, state in visited_states:
-            if (player, state.getCompressedBoardStr()) not in self.plays:
+            if (player, state.getCompressedBoardStr()) not in self.results:
                 continue
-            self.plays[(player, state.getCompressedBoardStr())] += 1
-            if player == winner or winner == DRAW \
+            self.results[(player, state.getCompressedBoardStr())]['plays'] += 1
+            if player == winner \
             or (self.use_point and (state.getPoint(state.FIRST) > state.getPoint(state.SECOND)) and player == state.FIRST) \
             or (self.use_point and (state.getPoint(state.FIRST) < state.getPoint(state.SECOND)) and player == state.SECOND):
-                self.wins[(player, state.getCompressedBoardStr())] += 1
+                self.results[(player, state.getCompressedBoardStr())]['wins'] += 1
+                
+            elif winner == DRAW:
+                self.results[(player, state.getCompressedBoardStr())]['draws'] += 1
 
 
 def saveObject(obj, fileName):
